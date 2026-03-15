@@ -486,7 +486,7 @@ async def _handle_workspace_command(
         if len(parts) < 2:
             return "⚠️ 用法：`/ws save 名称 [路径]`"
         name = parts[1]
-        path = await store.get_current_raw(user_id, chat_id).get("cwd", DEFAULT_CWD)
+        path = (await store.get_current_raw(user_id, chat_id)).get("cwd", DEFAULT_CWD)
         if len(parts) >= 3:
             path = os.path.expanduser(parts[2])
         if not os.path.isdir(path):
@@ -513,7 +513,7 @@ async def _handle_workspace_command(
         path = os.path.expanduser(parts[1])
         if not os.path.isdir(path):
             return f"❌ 路径不存在：`{path}`"
-        old_name = await store.get_current_raw(user_id, chat_id).get("workspace", "")
+        old_name = (await store.get_current_raw(user_id, chat_id)).get("workspace", "")
         await store.set_cwd(user_id, chat_id, path)
         suffix = "，并解除原工作空间绑定" if old_name else ""
         return f"✅ 当前群组工作目录已切换为 `{path}`{suffix}"
@@ -626,7 +626,7 @@ async def handle_command(
         path = os.path.expanduser(args)
         if not os.path.isdir(path):
             return f"❌ 路径不存在：`{path}`"
-        old_name = await store.get_current_raw(user_id, chat_id).get("workspace", "")
+        old_name = (await store.get_current_raw(user_id, chat_id)).get("workspace", "")
         await store.set_cwd(user_id, chat_id, path)
         suffix = "，并解除原工作空间绑定" if old_name else ""
         return f"✅ 工作目录已切换为 `{path}`{suffix}"
